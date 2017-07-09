@@ -1,16 +1,14 @@
-import Vorpal from "vorpal";
+import Vorpal from 'vorpal'
 
-const vorpal = Vorpal();
+const vorpal = Vorpal()
 
-vorpal
-  .command("say [words...]")
-  .option("-b, --backwards")
-  .option("-t, --twice")
-  .action((args, callback) => {
-    let str = args.words.join(" ");
-    str = args.options.backwards ? str.split("").reverse().join("") : str;
-    this.log(str);
-    callback();
-  });
+function say(args, callback) {
+  let str = args.words.join(' ')
+  str = args.options.backwards ? str.split('').reverse().join('') : str
+  this.log(str)
+  callback()
+}
 
-vorpal.delimiter("quattuor$").show();
+vorpal.command('say [words...]').option('-b, --backwards').option('-t, --twice').action(say)
+
+vorpal.delimiter('quattuor$').show()

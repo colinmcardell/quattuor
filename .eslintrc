@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb-base",
+  "plugins": ["babel", "import"],
+  "rules": {
+    "no-underscore-dangle": [0],
+    "semi": ["error", "never"],
+    "import/extensions": [
+      2,
+      {
+        "js": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": ["@"]
+      }
+    ]
+  },
+}
