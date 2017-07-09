@@ -1,0 +1,17 @@
+{
+  "name": "quattuor",
+  "version": "1.0.0",
+  "main": "cli.js",
+  "author": "Colin McArdell",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d lib"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-latest": "^6.24.1"
+  },
+  "dependencies": {
+    "vorpal": "^1.12.0"
+  }
+}
