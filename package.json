@@ -1,23 +1,31 @@
 {
   "name": "quattuor",
   "version": "1.0.0",
-  "main": "cli.js",
+  "main": "app.js",
   "author": "Colin McArdell",
   "license": "MIT",
   "scripts": {
-    "build": "babel src -d lib",
-    "format": "prettier-eslint --write \"src/**/*.js\""
+    "start": "nodemon lib/index.js --exec babel-node",
+    "build": "babel --plugins transform-async-to-generator lib -d dist",
+    "serve": "node dist/index.js",
+    "test": "mocha --compilers js:babel-register",
+    "format": "prettier-eslint --write \"lib/**/*.js\""
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-preset-latest": "^6.24.1",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
     "eslint": "^4.5.0",
     "eslint-config-airbnb-base": "^11.2.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-import": "^2.7.0",
+    "mocha": "^3.5.0",
+    "nodemon": "^1.11.0",
     "prettier-eslint-cli": "^4.1.1"
   },
   "dependencies": {
-    "vorpal": "^1.12.0"
+    "koa": "^2.3.0",
+    "vantage": "^1.7.0"
   }
 }
