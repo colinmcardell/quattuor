@@ -25,7 +25,9 @@
     "prettier-eslint-cli": "^4.1.1"
   },
   "dependencies": {
+    "aplay": "^1.1.0",
     "koa": "^2.3.0",
+    "sox": "^0.1.0",
     "vantage": "^1.7.0"
   }
 }

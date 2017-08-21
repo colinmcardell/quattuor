@@ -99,6 +99,10 @@ anymatch@^1.3.0:
     micromatch "^2.1.5"
     normalize-path "^2.0.0"
 
+aplay@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/aplay/-/aplay-1.1.0.tgz#2b9cf5c826be6777c5c392e08974da317cc23e18"
+
 aproba@^1.0.3:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.1.2.tgz#45c6629094de4e96f693ef7eab74ae079c240fc1"
@@ -678,6 +682,10 @@ base64-arraybuffer@0.1.2:
 base64id@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base64id/-/base64id-0.1.0.tgz#02ce0fdeee0cef4f40080e1e73e834f0b1bfce3f"
+
+batch@~0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/batch/-/batch-0.3.2.tgz#8f802c1358be2b33535f8808e0a23c9f0075733b"
 
 bcrypt-pbkdf@^1.0.0:
   version "1.0.1"
@@ -3390,6 +3398,12 @@ source-map-support@^0.4.15:
 source-map@^0.5.6:
   version "0.5.6"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
+
+sox@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/sox/-/sox-0.1.0.tgz#a684dcc69aef057c241d4a20e6eb6004a3245560"
+  dependencies:
+    batch "~0.3.2"
 
 spdx-correct@~1.0.0:
   version "1.0.2"
