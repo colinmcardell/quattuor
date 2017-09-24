@@ -14,15 +14,22 @@ var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
+var _aplay = require('aplay');
+
+var _aplay2 = _interopRequireDefault(_aplay);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var BANNER = '######################################################################' + '#                        Welcome to quattuor                         #' + '#                                                                    #' + '#              All connections are monitored and recorded            #' + '#      Disconnect IMMEDIATELY if you are not an authorized user      #' + '######################################################################';
+var BANNER = '######################################################################\n' + '#                        Welcome to quattuor                         #\n' + '#                                                                    #\n' + '#              All connections are monitored and recorded            #\n' + '#      Disconnect IMMEDIATELY if you are not an authorized user      #\n' + '######################################################################';
 var DELIMITER = 'quattuor$';
 var PORT = 3000;
+var FILES_PATH = 'assets';
+
+var audioFile = null;
 
 var app = new _koa2.default();
 
@@ -32,7 +39,7 @@ app.use(function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            ctx.body = 'Hey Fart Face!';
+            ctx.body = BANNER;
 
           case 1:
           case 'end':
@@ -48,37 +55,16 @@ app.use(function () {
 }());
 
 var server = (0, _vantage2.default)().delimiter(DELIMITER).banner(BANNER).listen(app, PORT);
-
-function listFiles(args, callback) {
-  var _this = this;
-
-  _fs2.default.stat('/tmp/world', function (err, stats) {
-    if (err) throw err;
-    _this.log('stats: ' + JSON.stringify(stats));
-    callback();
-  });
-}
-
-// function say(args, callback) {
-//   let str = args.words.join(' ')
-//   str = args.options.backwards ? str.split('').reverse().join('') : str
-//   this.log(str)
-//   callback()
-// }
-
-// function start(arg, callback) {
-//   server.listen(3000, () => {
-//     this.log('quattuor server started – listening on port 3000.')
-//     callback()
-//   })
-// }
-
-var addCommand = function addCommand(_ref2) {
+server.addCommand = function (_ref2) {
   var command = _ref2.command,
       options = _ref2.options,
+      description = _ref2.description,
       func = _ref2.func;
 
   var next = server.command(command);
+  /* eslint-disable no-unused-expressions */
+  description && next.description(description);
+  /* eslint-enable no-unused-expressions */
   var addOptions = function addOptions(cmd, opts) {
     var _opts = _toArray(opts),
         first = _opts[0],
@@ -90,17 +76,75 @@ var addCommand = function addCommand(_ref2) {
     });
     return option;
   };
-  if (options) {
-    next = addOptions(next, options);
-  }
+  next = options && addOptions(next, options) || next;
   next.action(func);
 };
 
-var command = {
-  command: 'list',
-  func: listFiles
-};
+var player = new _aplay2.default();
+player.on('complete', function () {
+  server.log('Playback Complete \u2013 ' + audioFile);
+});
 
-addCommand(command);
+/** File System Helpers */
+var readFiles = function readFiles() {
+  var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : FILES_PATH;
+  return _fs2.default.readdirSync(path).map(function (file) {
+    return path + '/' + file;
+  });
+};
+/** File System Helpers - End */
+
+/** CLI functions */
+function ls(args, callback) {
+  var files = readFiles();
+  this.log(files);
+
+  callback();
+}
+
+function play(args, callback) {
+  audioFile = args.options.file || readFiles()[0];
+  this.log('Playing \u2013 ' + audioFile);
+  player.play(audioFile);
+  callback();
+}
+
+function pause(args, callback) {
+  this.log('Pausing Playback \u2013 ' + audioFile);
+  player.pause();
+  callback();
+}
+
+function resume(args, callback) {
+  this.log('Resuming Playback \u2013 ' + audioFile);
+  player.resume();
+  callback();
+}
+/** CLI functions */
+
+server.addCommand({
+  command: 'ls',
+  description: 'List available audio files for playback.',
+  func: ls
+});
+
+server.addCommand({
+  command: 'play',
+  description: 'Plays to provided audio file using "aplay".',
+  options: ['-f --file'],
+  func: play
+});
+
+server.addCommand({
+  command: 'pause',
+  description: 'Pauses the currently playing audio file.',
+  func: pause
+});
+
+server.addCommand({
+  command: 'resume',
+  description: 'Resumes playback of the current audio file.',
+  func: resume
+});
 
 server.show();
