@@ -15,7 +15,7 @@
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.6.1",
     "eslint": "^4.7.2",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-babel": "^4.1.1",
@@ -25,7 +25,7 @@
     "prettier-eslint-cli": "^4.1.1"
   },
   "dependencies": {
-    "aplay": "^1.1.0",
+    "aplay": "^1.2.0",
     "koa": "^2.3.0",
     "sox": "^0.1.0",
     "vantage": "^1.7.0"
