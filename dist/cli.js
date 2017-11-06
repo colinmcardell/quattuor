@@ -6,13 +6,17 @@ var _vantage = require('vantage');
 
 var _vantage2 = _interopRequireDefault(_vantage);
 
-var _koa = require('koa');
+var _express = require('express');
 
-var _koa2 = _interopRequireDefault(_koa);
+var _express2 = _interopRequireDefault(_express);
 
 var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
 
 var _aplay = require('aplay');
 
@@ -22,44 +26,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+// import Sox from 'sox'
 
-var BANNER = '######################################################################\n' + '#                        Welcome to quattuor                         #\n' + '#                                                                    #\n' + '#              All connections are monitored and recorded            #\n' + '#      Disconnect IMMEDIATELY if you are not an authorized user      #\n' + '######################################################################';
+var BANNER = '######################################################################\n' + '#                        Welcome to quattuor                         #\n' + '######################################################################';
 var DELIMITER = 'quattuor$';
 var PORT = 3000;
 var FILES_PATH = 'assets';
 
 var audioFile = null;
 
-var app = new _koa2.default();
+var app = new _express2.default();
 
-app.use(function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(ctx) {
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            ctx.body = BANNER;
-
-          case 1:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, undefined);
-  }));
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-}());
+app.get('/', function (req, res) {
+  return res.send(BANNER);
+});
 
 var server = (0, _vantage2.default)().delimiter(DELIMITER).banner(BANNER).listen(app, PORT);
-server.addCommand = function (_ref2) {
-  var command = _ref2.command,
-      options = _ref2.options,
-      description = _ref2.description,
-      func = _ref2.func;
+server.addCommand = function (_ref) {
+  var command = _ref.command,
+      options = _ref.options,
+      description = _ref.description,
+      func = _ref.func;
 
   var next = server.command(command);
   /* eslint-disable no-unused-expressions */
@@ -82,41 +69,46 @@ server.addCommand = function (_ref2) {
 
 var player = new _aplay2.default();
 player.on('complete', function () {
-  server.log('Playback Complete \u2013 ' + audioFile);
+  server.log('Playback Complete \u2013 ' + audioFile.path);
 });
 
 /** File System Helpers */
 var readFiles = function readFiles() {
-  var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : FILES_PATH;
-  return _fs2.default.readdirSync(path).map(function (file) {
-    return path + '/' + file;
+  var filesPath = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : FILES_PATH;
+
+  var fullFilesPath = _path2.default.resolve(process.cwd(), filesPath);
+  return _fs2.default.readdirSync(fullFilesPath).map(function (file) {
+    var fullPath = fullFilesPath + '/' + file;
+    return {
+      path: fullPath
+    };
   });
 };
+
 /** File System Helpers - End */
 
 /** CLI functions */
 function ls(args, callback) {
-  var files = readFiles();
+  var files = JSON.stringify(readFiles());
   this.log(files);
-
   callback();
 }
 
 function play(args, callback) {
-  audioFile = args.options.file || readFiles()[0];
-  this.log('Playing \u2013 ' + audioFile);
-  player.play(audioFile);
+  audioFile = args && args.options && args.options.file || readFiles()[0];
+  this.log('Playing \u2013 ' + audioFile.path);
+  player.play(audioFile.path);
   callback();
 }
 
 function pause(args, callback) {
-  this.log('Pausing Playback \u2013 ' + audioFile);
+  this.log('Pausing Playback \u2013 ' + audioFile.path);
   player.pause();
   callback();
 }
 
 function resume(args, callback) {
-  this.log('Resuming Playback \u2013 ' + audioFile);
+  this.log('Resuming Playback \u2013 ' + audioFile.path);
   player.resume();
   callback();
 }
