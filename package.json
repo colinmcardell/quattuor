@@ -6,19 +6,18 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon lib/index.js --exec babel-node",
-    "build":
-      "babel --plugins @babel/plugin-proposal-object-rest-spread,@babel/plugin-transform-async-to-generator lib -d dist",
+    "build": "babel --plugins @babel/plugin-proposal-object-rest-spread,@babel/plugin-transform-async-to-generator lib -d dist",
     "serve": "node dist/index.js",
     "test": "mocha --compilers js:babel-register",
     "format": "prettier-eslint --write \"lib/**/*.js\""
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.32",
-    "@babel/core": "^7.0.0-beta.32",
-    "@babel/node": "^7.0.0-beta.32",
-    "@babel/polyfill": "^7.0.0-beta.32",
-    "@babel/preset-env": "^7.0.0-beta.32",
-    "@babel/register": "^7.0.0-beta.32",
+    "@babel/cli": "^7.0.0-beta.34",
+    "@babel/core": "^7.0.0-beta.34",
+    "@babel/node": "^7.0.0-beta.34",
+    "@babel/polyfill": "^7.0.0-beta.34",
+    "@babel/preset-env": "^7.0.0-beta.34",
+    "@babel/register": "^7.0.0-beta.34",
     "eslint": "^4.12.0",
     "eslint-config-airbnb-base": "^12.0.0",
     "eslint-plugin-babel": "^4.1.1",
