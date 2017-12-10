@@ -15,7 +15,9 @@ var _Player = _interopRequireDefault(require("./Player"));
 /** Commands - End */
 
 /** CLI Actions */
-var lsAction = function () {
+var lsAction =
+/*#__PURE__*/
+function () {
   var _ref5 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee4(args, callback) {
@@ -42,6 +44,52 @@ var lsAction = function () {
 
   return function lsAction(_x2, _x3) {
     return _ref5.apply(this, arguments);
+  };
+}();
+
+var playAction =
+/*#__PURE__*/
+function () {
+  var _ref6 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee5(args, callback) {
+    var filePath, files, file;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            filePath = args && args.options && args.options.file;
+
+            if (filePath) {
+              _context5.next = 7;
+              break;
+            }
+
+            _context5.next = 4;
+            return readFiles();
+
+          case 4:
+            files = _context5.sent;
+            file = files[0];
+            /* eslint-enable prefer-destructuring */
+
+            filePath = file.path;
+
+          case 7:
+            play(filePath);
+            this.log("Playing \u2013 ".concat(player.filePath()));
+            callback();
+
+          case 10:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+
+  return function playAction(_x4, _x5) {
+    return _ref6.apply(this, arguments);
   };
 }();
 
@@ -92,7 +140,9 @@ server.addCommand = function (_ref) {
 /** File System Helpers */
 
 
-var readFiles = function () {
+var readFiles =
+/*#__PURE__*/
+function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2() {
@@ -107,7 +157,9 @@ var readFiles = function () {
             filesPath = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : FILES_PATH;
             fullFilesPath = _path.default.resolve(process.cwd(), filesPath);
             dirContent = _fs.default.readdirSync(fullFilesPath);
-            return _context2.abrupt("return", Promise.all(dirContent.map(function () {
+            return _context2.abrupt("return", Promise.all(dirContent.map(
+            /*#__PURE__*/
+            function () {
               var _ref3 = _asyncToGenerator(
               /*#__PURE__*/
               regeneratorRuntime.mark(function _callee(file) {
@@ -158,7 +210,9 @@ var readFiles = function () {
 /** Commands */
 
 
-var ls = function () {
+var ls =
+/*#__PURE__*/
+function () {
   var _ref4 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3() {
@@ -187,8 +241,8 @@ var ls = function () {
   };
 }();
 
-var play = function play(fileName) {
-  player.play(fileName);
+var play = function play(filePath) {
+  player.play(filePath);
 };
 
 var pause = function pause() {
@@ -202,22 +256,6 @@ var resume = function resume() {
 var stop = function stop() {
   player.stop();
 };
-
-function playAction(args, callback) {
-  var filePath = args && args.options && args.options.file;
-
-  if (!filePath) {
-    /* eslint-disable prefer-destructuring */
-    var file = readFiles()[0];
-    /* eslint-enable prefer-destructuring */
-
-    filePath = file.path;
-  }
-
-  play(filePath);
-  this.log("Playing \u2013 ".concat(player.filePath()));
-  callback();
-}
 
 function pauseAction(args, callback) {
   pause();
@@ -267,32 +305,34 @@ function stopAction(args, callback) {
 });
 /** Add CLI Commands - End */
 
-app.get('/ls', function () {
-  var _ref6 = _asyncToGenerator(
+app.get('/ls',
+/*#__PURE__*/
+function () {
+  var _ref7 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(req, res) {
+  regeneratorRuntime.mark(function _callee6(req, res) {
     var files;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            _context5.next = 2;
+            _context6.next = 2;
             return readFiles();
 
           case 2:
-            files = _context5.sent;
+            files = _context6.sent;
             res.send(files);
 
           case 4:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5, this);
+    }, _callee6, this);
   }));
 
-  return function (_x4, _x5) {
-    return _ref6.apply(this, arguments);
+  return function (_x6, _x7) {
+    return _ref7.apply(this, arguments);
   };
 }());
 app.get('/', function (req, res) {

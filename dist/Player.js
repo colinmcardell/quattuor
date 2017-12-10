@@ -5,19 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _groove = _interopRequireDefault(require("groove"));
+
 var _aplay = _interopRequireDefault(require("aplay"));
 
 var _sox = _interopRequireDefault(require("sox"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } } function _next(value) { step("next", value); } function _throw(err) { step("throw", err); } _next(); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return _get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } }
 
@@ -25,13 +25,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var instance = null;
 
 var Player =
 /*#__PURE__*/
-function (_Sound) {
-  _inherits(Player, _Sound);
-
+function () {
   _createClass(Player, null, [{
     key: "meta",
     value: function () {
@@ -43,12 +41,22 @@ function (_Sound) {
             switch (_context.prev = _context.next) {
               case 0:
                 return _context.abrupt("return", new Promise(function (resolve, reject) {
-                  _sox.default.identify(filePath, function (err, results) {
+                  _groove.default.open(filePath, function (err, file) {
                     if (err) {
                       reject(err);
-                    } else {
-                      resolve(results);
                     }
+
+                    var metadata = file.metadata();
+                    var duration = file.duration();
+                    file.close(function (err) {
+                      if (err) {
+                        reject(err);
+                      }
+
+                      resolve(_extends({}, metadata, {
+                        duration: duration
+                      }));
+                    });
                   });
                 }));
 
@@ -69,22 +77,36 @@ function (_Sound) {
   }]);
 
   function Player() {
-    var _this;
-
     _classCallCheck(this, Player);
 
-    _this = _possibleConstructorReturn(this, (Player.__proto__ || Object.getPrototypeOf(Player)).call(this));
-    _this._filePath = null;
-    return _this;
+    if (instance) {
+      return instance;
+    }
+
+    _groove.default.connectSoundBackend();
+
+    var playlist = _groove.default.createPlaylist();
+
+    var player = _groove.default.createPlayer();
+
+    player.useExactAudioFormat = true;
+    this._files = [];
+    this._playlist = playlist;
+    this._player = player;
+    instance = this;
+    return instance;
   }
 
   _createClass(Player, [{
     key: "play",
     value: function play(filePath) {
       if (!filePath) {
-        this._filePath = null;
         return this;
       }
+
+      this._attachPlaylist();
+
+      return;
 
       if (Object.is(filePath, this._filePath)) {
         return _get(Player.prototype.__proto__ || Object.getPrototypeOf(Player.prototype), "play", this).call(this, this._filePath);
@@ -98,9 +120,49 @@ function (_Sound) {
     value: function filePath() {
       return this._filePath;
     }
+  }, {
+    key: "_attachPlaylist",
+    value: function () {
+      var _ref2 = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2() {
+        var _this = this;
+
+        var playlist;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                playlist = this._playlist;
+                console.log(this._player, this.playlist);
+                return _context2.abrupt("return", new Promise(function (resolve, reject) {
+                  _this._player.attach(playlist, function (err) {
+                    if (err) {
+                      reject(err);
+                    }
+
+                    console.log(_this._player, _this.playlist);
+                    resolve();
+                  });
+                }));
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function _attachPlaylist() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return _attachPlaylist;
+    }()
   }]);
 
   return Player;
-}(_aplay.default);
+}();
 
 exports.default = Player;
