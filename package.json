@@ -30,6 +30,7 @@
   "dependencies": {
     "express": "^4.16.2",
     "groove": "^2.5.1",
+    "keese": "^1.1.1",
     "vantage": "^1.7.0"
   }
 }

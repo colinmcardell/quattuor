@@ -2164,6 +2164,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+keese@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/keese/-/keese-1.1.1.tgz#69a1f971e64ee5d2094af002f6d92fa806250842"
+
 kind-of@^3.0.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
