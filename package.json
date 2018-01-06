@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon lib/index.js --exec babel-node",
-    "build": "babel --plugins @babel/plugin-proposal-object-rest-spread,@babel/plugin-transform-async-to-generator,@babel/plugin-proposal-class-properties lib -d dist",
+    "build": "babel --plugins @babel/plugin-proposal-object-rest-spread,@babel/plugin-transform-async-to-generator lib -d dist",
     "serve": "node dist/index.js",
     "test": "mocha --compilers js:babel-register",
     "format": "prettier-eslint --write \"lib/**/*.js\""
@@ -15,7 +15,6 @@
     "@babel/cli": "^7.0.0-beta.34",
     "@babel/core": "^7.0.0-beta.34",
     "@babel/node": "^7.0.0-beta.34",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.35",
     "@babel/polyfill": "^7.0.0-beta.34",
     "@babel/preset-env": "^7.0.0-beta.34",
     "@babel/register": "^7.0.0-beta.34",
@@ -25,12 +24,12 @@
     "eslint-plugin-import": "^2.7.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
-    "prettier-eslint-cli": "^4.6.1"
+    "prettier-eslint-cli": "^4.1.1"
   },
   "dependencies": {
+    "aplay": "^1.2.0",
     "express": "^4.16.2",
-    "groove": "^2.5.1",
-    "keese": "^1.1.1",
+    "sox": "^0.1.0",
     "vantage": "^1.7.0"
   }
 }

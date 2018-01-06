@@ -1,8 +1,7 @@
 {
-  "presets": [["@babel/preset-env", { "node": "4.8.7" }]],
+  "presets": [["@babel/preset-env", { "node": "current" }]],
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-transform-async-to-generator",
-    "@babel/plugin-proposal-class-properties"
+    "@babel/plugin-transform-async-to-generator"
   ]
 }
