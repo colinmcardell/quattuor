@@ -12,39 +12,6 @@ var _path = _interopRequireDefault(require("path"));
 
 var _Player = _interopRequireDefault(require("./Player"));
 
-/** Commands - End */
-
-/** CLI Actions */
-var lsAction = function () {
-  var _ref5 = _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee4(args, callback) {
-    var result;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.next = 2;
-            return ls();
-
-          case 2:
-            result = _context4.sent;
-            this.log(result);
-            callback();
-
-          case 5:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, this);
-  }));
-
-  return function lsAction(_x2, _x3) {
-    return _ref5.apply(this, arguments);
-  };
-}();
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -92,7 +59,9 @@ server.addCommand = function (_ref) {
 /** File System Helpers */
 
 
-var readFiles = function () {
+var readFiles =
+/*#__PURE__*/
+function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2() {
@@ -107,7 +76,9 @@ var readFiles = function () {
             filesPath = _args2.length > 0 && _args2[0] !== undefined ? _args2[0] : FILES_PATH;
             fullFilesPath = _path.default.resolve(process.cwd(), filesPath);
             dirContent = _fs.default.readdirSync(fullFilesPath);
-            return _context2.abrupt("return", Promise.all(dirContent.map(function () {
+            return _context2.abrupt("return", Promise.all(dirContent.map(
+            /*#__PURE__*/
+            function () {
               var _ref3 = _asyncToGenerator(
               /*#__PURE__*/
               regeneratorRuntime.mark(function _callee(file) {
@@ -158,7 +129,9 @@ var readFiles = function () {
 /** Commands */
 
 
-var ls = function () {
+var ls =
+/*#__PURE__*/
+function () {
   var _ref4 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3() {
@@ -187,8 +160,8 @@ var ls = function () {
   };
 }();
 
-var play = function play(fileName) {
-  player.play(fileName);
+var play = function play(filePath) {
+  player.play(filePath);
 };
 
 var pause = function pause() {
@@ -202,21 +175,86 @@ var resume = function resume() {
 var stop = function stop() {
   player.stop();
 };
+/** Commands - End */
 
-function playAction(args, callback) {
-  var filePath = args && args.options && args.options.file;
+/** CLI Actions */
 
-  if (!filePath) {
-    /* eslint-disable prefer-destructuring */
-    var file = readFiles()[0];
-    /* eslint-enable prefer-destructuring */
 
-    filePath = file.path;
-  }
+function lsAction(_x2, _x3) {
+  return _lsAction.apply(this, arguments);
+}
 
-  play(filePath);
-  this.log("Playing \u2013 ".concat(player.filePath()));
-  callback();
+function _lsAction() {
+  _lsAction = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee5(args, callback) {
+    var result;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return ls();
+
+          case 2:
+            result = _context5.sent;
+            this.log(result);
+            callback();
+
+          case 5:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, this);
+  }));
+  return _lsAction.apply(this, arguments);
+}
+
+function playAction(_x4, _x5) {
+  return _playAction.apply(this, arguments);
+}
+
+function _playAction() {
+  _playAction = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee6(args, callback) {
+    var filePath, files, _files, file, rest;
+
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            filePath = args && args.options && args.options.file;
+
+            if (filePath) {
+              _context6.next = 7;
+              break;
+            }
+
+            _context6.next = 4;
+            return readFiles();
+
+          case 4:
+            files = _context6.sent;
+            _files = _toArray(files), file = _files[0], rest = _files.slice(1);
+            /* eslint-enable prefer-destructuring */
+
+            filePath = file.path;
+
+          case 7:
+            play(filePath);
+            this.log("Playing \u2013 ".concat(player.filePath()));
+            callback();
+
+          case 10:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this);
+  }));
+  return _playAction.apply(this, arguments);
 }
 
 function pauseAction(args, callback) {
@@ -267,32 +305,34 @@ function stopAction(args, callback) {
 });
 /** Add CLI Commands - End */
 
-app.get('/ls', function () {
-  var _ref6 = _asyncToGenerator(
+app.get('/ls',
+/*#__PURE__*/
+function () {
+  var _ref5 = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee5(req, res) {
+  regeneratorRuntime.mark(function _callee4(req, res) {
     var files;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _context5.next = 2;
+            _context4.next = 2;
             return readFiles();
 
           case 2:
-            files = _context5.sent;
+            files = _context4.sent;
             res.send(files);
 
           case 4:
           case "end":
-            return _context5.stop();
+            return _context4.stop();
         }
       }
-    }, _callee5, this);
+    }, _callee4, this);
   }));
 
-  return function (_x4, _x5) {
-    return _ref6.apply(this, arguments);
+  return function (_x6, _x7) {
+    return _ref5.apply(this, arguments);
   };
 }());
 app.get('/', function (req, res) {

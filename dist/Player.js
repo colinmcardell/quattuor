@@ -17,7 +17,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return _get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } }
 
@@ -35,7 +35,7 @@ function (_Sound) {
   _createClass(Player, null, [{
     key: "meta",
     value: function () {
-      var _ref = _asyncToGenerator(
+      var _meta = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(filePath) {
         return regeneratorRuntime.wrap(function _callee$(_context) {
@@ -60,11 +60,9 @@ function (_Sound) {
         }, _callee, this);
       }));
 
-      function meta(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return meta;
+      return function meta(_x) {
+        return _meta.apply(this, arguments);
+      };
     }()
   }]);
 
