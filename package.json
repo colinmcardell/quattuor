@@ -30,6 +30,7 @@
   "dependencies": {
     "aplay": "^1.2.0",
     "express": "^4.16.2",
+    "loudness": "^0.2.2",
     "sox": "^0.1.0",
     "vantage": "^1.7.0"
   }
